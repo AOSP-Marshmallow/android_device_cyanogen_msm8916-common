@@ -58,7 +58,7 @@ TARGET_SYSTEM_PROP := $(VENDOR_PATH)/system.prop
 # Kernel
 BOARD_CUSTOM_BOOTIMG_MK := $(VENDOR_PATH)/mkbootimg.mk
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 androidboot.selinux=permissive
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_KERNEL_TAGS_OFFSET := 0x01E00000
@@ -96,15 +96,6 @@ MALLOC_IMPL := dlmalloc
 # Crypto
 TARGET_HW_DISK_ENCRYPTION := true
 
-# Dex
-ifeq ($(HOST_OS),linux)
-  ifeq ($(TARGET_BUILD_VARIANT),user)
-    ifeq ($(WITH_DEXPREOPT),)
-      WITH_DEXPREOPT := true
-    endif
-  endif
-endif
-
 # Display
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
@@ -114,10 +105,11 @@ TARGET_CONTINUOUS_SPLASH_ENABLED := true
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
 USE_OPENGL_RENDERER := true
+TARGET_USES_QCOM_BSP := true
+TARGET_NO_RPC := true
 
-# FM
-AUDIO_FEATURE_ENABLED_FM := true
-TARGET_QCOM_NO_FM_FIRMWARE := true
+# Enable CSVT
+TARGET_USES_CSVT := true
 
 # Fonts
 EXTENDED_FONT_FOOTPRINT := true
@@ -125,6 +117,8 @@ EXTENDED_FONT_FOOTPRINT := true
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_msm
 TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
+
+MAX_VIRTUAL_DISPLAY_DIMENSION := 2048
 
 # Power
 TARGET_POWERHAL_VARIANT := qcom
@@ -143,19 +137,19 @@ TARGET_RIL_VARIANT := caf
 PROTOBUF_SUPPORTED := true
 
 # SELinux
-include device/qcom/sepolicy/sepolicy.mk
+# include device/qcom/sepolicy/sepolicy.mk
 
-BOARD_SEPOLICY_DIRS += \
-    $(VENDOR_PATH)/sepolicy
+#BOARD_SEPOLICY_DIRS += \
+#    $(VENDOR_PATH)/sepolicy
 
-BOARD_SEPOLICY_UNION += \
-    bluetooth_loader.te \
-    healthd.te \
-    qseecomd.te \
-    surfaceflinger.te \
-    wcnss_service.te \
-    file_contexts \
-    property_contexts
+# BOARD_SEPOLICY_UNION += \
+#    bluetooth_loader.te \
+#    healthd.te \
+#    qseecomd.te \
+#    surfaceflinger.te \
+#    wcnss_service.te \
+#    file_contexts \
+#    property_contexts
 
 # Time services
 BOARD_USES_QC_TIME_SERVICES := true

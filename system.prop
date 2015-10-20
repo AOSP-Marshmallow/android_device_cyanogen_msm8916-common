@@ -1,6 +1,7 @@
 # Audio
 tunnel.audio.encode=false
 av.offload.enable=true
+audio.offload.video=true
 av.streaming.offload.enable=true
 audio.offload.buffer.size.kb=64
 audio.offload.gapless.enabled=true
